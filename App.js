@@ -1,21 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { Button, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./src/Components/Home";
+import Setting from "./src/Components/Setting";
+import store from "./src/Components/Redux/store";
+import { Provider as StoreProvider } from "react-redux";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const Stack = createStackNavigator();
+
+function MyStack() {
+    return (
+        <StoreProvider store={store}>
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: true,
+                }}
+            >
+                <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{
+                        title: "Danh sách",
+                        headerStyle: {
+                            height: 0,
+                        },
+                    }}
+                />
+                <Stack.Screen name="Setting" component={Setting} />
+            </Stack.Navigator>
+        </StoreProvider>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+    return (
+        <NavigationContainer>
+            <MyStack />
+        </NavigationContainer>
+    );
+}
