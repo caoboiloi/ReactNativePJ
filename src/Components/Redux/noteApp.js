@@ -23,7 +23,6 @@ const initialState = [{
         title: "1",
         time: 1597573620339,
         completed: false,
-        id: 1,
         important: true,
         note: "hallo1"
     },
@@ -31,7 +30,6 @@ const initialState = [{
         title: "2",
         time: 1598568778148,
         completed: false,
-        id: 2,
         important: true,
         note: "hallo2"
     },
@@ -39,14 +37,12 @@ const initialState = [{
         title: "3",
         time: 1597168778147,
         completed: true,
-        id: 3,
         note: "hallo3"
     },
     {
         title: "4",
         time: 1598568778146,
         completed: false,
-        id: 4,
         important: false,
         note: "hallo4"
     },
@@ -54,7 +50,6 @@ const initialState = [{
         title: "5",
         time: 1596568778145,
         completed: false,
-        id: 5,
         important: true,
         note: "hallo5"
     },
@@ -62,7 +57,6 @@ const initialState = [{
         title: "1236",
         time: 1597568778144,
         completed: false,
-        id: 6,
         important: false,
         note: "hallo6"
     },
@@ -71,7 +65,6 @@ const initialState = [{
 function notesReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_NOTE:
-            console.log("action", action)
             return [
                 ...state,
                 {

@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import IconCancle from "react-native-vector-icons/Feather";
 import StarIcon from "react-native-vector-icons/AntDesign";
 import AddEditToDo from "./Modal/AddEditToDo";
-let data = [];
+let dataTemp = [];
 
 const UpcomingItem = (props) => {
     const { list, completed } = props;
@@ -41,7 +41,7 @@ const UpcomingItem = (props) => {
                             newList.splice(index, 1);
                             newTempItem.completed = true;
                             newList.splice(index, 0, newTempItem);
-                            data = [...newList];
+                            dataTemp = [...newList];
                             toggleModal();
                         }}
                         containerStyle={{
@@ -99,9 +99,9 @@ const UpcomingItem = (props) => {
                         color="green"
                         onPress={() => {
                             setModalVisible(false);
-                            if (data != []) {
-                                completed(data);
-                                data = [];
+                            if (dataTemp != []) {
+                                completed(dataTemp);
+                                dataTemp = [];
                             }
                         }}
                         style={styles.icon}

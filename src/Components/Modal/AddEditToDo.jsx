@@ -6,6 +6,7 @@ import {
     TouchableWithoutFeedback,
     Switch,
     Button,
+    Keyboard,
 } from "react-native";
 import Modal from "react-native-modal";
 import { Dimensions } from "react-native";
@@ -30,17 +31,44 @@ const AddEditToDo = (props) => {
     const [note, setnote] = useState("");
     const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
     const mode = data ? "edit" : "new";
-    let isNew = false;
+    const [isNew, setisNew] = useState(false);
+    const setData = () => {
+        if (data) {
+            settitle(data.title);
+            setnote(data.note);
+            setIsEnabled(data.important);
+            setTime(data.time);
+        }
+    };
+    useEffect(() => {
+        const newData = {
+            title: title,
+            time: time,
+            completed: false,
+            important: isEnabled,
+            note: note,
+        };
+        if (JSON.stringify(data) !== JSON.stringify(newData) && title !== "") {
+            setisNew(true);
+        } else {
+            setisNew(false);
+        }
+    }, [isEnabled, title, note]);
     const titleInputChange = (e) => {
         settitle(e.nativeEvent.text);
     };
     const noteInputChange = (e) => {
         setnote(e.nativeEvent.text);
     };
-    const handleAddNote = () => {};
+    const handleAddNote = () => {
+        data.title = title;
+        data.time = time;
+        data.important = isEnabled;
+        data.note = note;
+        setAddVisible(false);
+    };
     const handleNewNote = () => {
         if (title !== "") {
-            console.log("handle1");
             const time = Date.now();
             const newData = {
                 title: title,
@@ -69,7 +97,10 @@ const AddEditToDo = (props) => {
         <View>
             <Modal
                 isVisible={isAddVisible}
-                onSwipeComplete={() => setAddVisible(false)}
+                onSwipeComplete={() => {
+                    setAddVisible(false);
+                    setData();
+                }}
                 animationIn="fadeInRight"
                 swipeDirection="down"
                 swipeThreshold={250}
@@ -78,7 +109,11 @@ const AddEditToDo = (props) => {
                 <View style={styles.item}>
                     <View style={styles.header}>
                         <TouchableWithoutFeedback
-                            onPress={() => setAddVisible(false)}
+                            onPress={() => {
+                                Keyboard.dismiss();
+                                setAddVisible(false);
+                                setData();
+                            }}
                         >
                             <Text style={styles.colorText}>Hủy</Text>
                         </TouchableWithoutFeedback>
@@ -95,14 +130,19 @@ const AddEditToDo = (props) => {
                                 : "Lời nhắc mới"}
                         </Text>
                         <TouchableWithoutFeedback
-                            onPress={() =>
-                                title === "" ? {} : handleNewNote()
-                            }
+                            onPress={() => {
+                                Keyboard.dismiss();
+                                const handleFunction =
+                                    mode == "new"
+                                        ? handleNewNote
+                                        : handleAddNote;
+                                !isNew ? {} : handleFunction();
+                            }}
                         >
                             <Text
                                 style={{
                                     ...styles.colorText,
-                                    color: title === "" ? "gray" : "#136CDE",
+                                    color: !isNew ? "gray" : "#136CDE",
                                 }}
                             >
                                 {mode === "edit" ? "Cập nhật" : "Thêm"}
@@ -163,12 +203,16 @@ const AddEditToDo = (props) => {
                                 value={isEnabled}
                             />
                         </View>
-                        <Button
-                            title="delete"
-                            onPress={() => {
-                                setDeleteVisible(true);
-                            }}
-                        />
+                        {mode === "edit" ? (
+                            <Button
+                                title="delete"
+                                onPress={() => {
+                                    setDeleteVisible(true);
+                                }}
+                            />
+                        ) : (
+                            <View></View>
+                        )}
                     </View>
                 </View>
                 {/* <CancelModal
