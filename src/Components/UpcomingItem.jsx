@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         borderWidth: 1,
-        padding: 15,
+        padding: 25,
         paddingTop: 0,
     },
     title: {

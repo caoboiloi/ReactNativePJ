@@ -5,6 +5,7 @@ import {
     View,
     Text,
     TouchableWithoutFeedback,
+    Button,
 } from "react-native";
 import CardList from "./CardList";
 import SearchBarInput from "./SearchBar";
@@ -12,8 +13,9 @@ import Upcoming from "./Upcoming";
 import IconAdd from "react-native-vector-icons/Ionicons";
 import AddEditToDo from "./Modal/AddEditToDo";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 function Home(props) {
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
     const [data, setdata] = React.useState([]);
     const [isAddVisible, setAddVisible] = React.useState(false);
 
@@ -43,6 +45,10 @@ function Home(props) {
             <AddEditToDo
                 isAddVisible={isAddVisible}
                 setAddVisible={setAddVisible}
+            />
+            <Button
+                title="asd"
+                onPress={() => navigation.navigate("AllList")}
             />
         </View>
     );

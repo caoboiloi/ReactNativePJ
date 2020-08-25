@@ -6,6 +6,8 @@ import Home from "./src/Components/Home";
 import Setting from "./src/Components/Setting";
 import store from "./src/Components/Redux/store";
 import { Provider as StoreProvider } from "react-redux";
+import SearchBarInput from "./src/Components/SearchBar";
+import AllList from "./src/Components/Screen/AllList";
 
 const Stack = createStackNavigator();
 
@@ -15,19 +17,33 @@ function MyStack() {
             <Stack.Navigator
                 screenOptions={{
                     headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "black",
+                        shadowRadius: 0,
+                        shadowOffset: {
+                            height: 0,
+                        },
+                    },
                 }}
             >
                 <Stack.Screen
                     name="Home"
                     component={Home}
                     options={{
+                        headerShown: false,
                         title: "Danh sách",
-                        headerStyle: {
-                            height: 0,
+                    }}
+                />
+                <Stack.Screen
+                    name="AllList"
+                    component={AllList}
+                    options={{
+                        headerTintColor: "#fff",
+                        headerTitleStyle: {
+                            fontWeight: "bold",
                         },
                     }}
                 />
-                <Stack.Screen name="Setting" component={Setting} />
             </Stack.Navigator>
         </StoreProvider>
     );

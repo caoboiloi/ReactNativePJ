@@ -41,8 +41,8 @@ const SearchBarInput = () => {
                     backgroundColor: "transparent",
                     borderTopWidth: 0,
                     borderColor: "gray",
-                    paddingStart: 15,
-                    paddingEnd: 15,
+                    paddingStart: 5,
+                    paddingEnd: 10,
                 }}
                 searchIcon={{ iconStyle: { fontSize: 25 } }}
                 onFocus={() => {
