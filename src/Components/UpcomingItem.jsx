@@ -6,12 +6,16 @@ import Icon from "react-native-vector-icons/Ionicons";
 import IconCancle from "react-native-vector-icons/Feather";
 import StarIcon from "react-native-vector-icons/AntDesign";
 import AddEditToDo from "./Modal/AddEditToDo";
+import { editnote, deletenote } from "./Redux/noteApp";
+import { useDispatch } from "react-redux";
 let dataTemp = [];
 
 const UpcomingItem = (props) => {
     const { list, completed } = props;
     const [isModalVisible, setModalVisible] = useState(false);
     const [isAddVisible, setAddVisible] = useState(false);
+    const dispatch = useDispatch();
+    const editNote = (note) => dispatch(editnote(note));
     const [data, setdata] = useState([]);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -100,7 +104,8 @@ const UpcomingItem = (props) => {
                         onPress={() => {
                             setModalVisible(false);
                             if (dataTemp != []) {
-                                completed(dataTemp);
+                                editNote(dataTemp);
+
                                 dataTemp = [];
                             }
                         }}

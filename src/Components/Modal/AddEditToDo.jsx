@@ -83,6 +83,7 @@ const AddEditToDo = (props) => {
             setTime("");
             addNote(newData);
             setAddVisible(false);
+            console.log(notes);
         }
     };
     useEffect(() => {
@@ -151,36 +152,44 @@ const AddEditToDo = (props) => {
                     </View>
                     <View style={styles.InputGroup}>
                         <View style={styles.WrapInput}>
-                            <Input
-                                placeholder="Tiêu đề"
-                                errorStyle={{ color: "red" }}
-                                inputContainerStyle={{
-                                    ...styles.input,
-                                    borderBottomWidth: 0.3,
-                                    borderTopLeftRadius: 10,
-                                    borderTopRightRadius: 10,
-                                }}
-                                inputStyle={{ color: "white" }}
-                                placeholderTextColor="#676769"
-                                errorStyle={{ display: "none" }}
-                                onChange={titleInputChange}
-                                value={title}
-                            />
+                            <TouchableWithoutFeedback
+                                onPress={Keyboard.dismiss}
+                            >
+                                <Input
+                                    placeholder="Tiêu đề"
+                                    errorStyle={{ color: "red" }}
+                                    inputContainerStyle={{
+                                        ...styles.input,
+                                        borderBottomWidth: 0.3,
+                                        borderTopLeftRadius: 10,
+                                        borderTopRightRadius: 10,
+                                    }}
+                                    inputStyle={{ color: "white" }}
+                                    placeholderTextColor="#676769"
+                                    errorStyle={{ display: "none" }}
+                                    onChange={titleInputChange}
+                                    value={title}
+                                />
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.WrapInput}>
-                            <Input
-                                placeholder="Ghi chú"
-                                errorStyle={{ color: "red" }}
-                                inputContainerStyle={{
-                                    ...styles.input,
-                                    borderBottomLeftRadius: 10,
-                                    borderBottomRightRadius: 10,
-                                }}
-                                inputStyle={{ color: "white" }}
-                                placeholderTextColor="#676769"
-                                onChange={noteInputChange}
-                                value={note}
-                            />
+                            <TouchableWithoutFeedback
+                                onPress={Keyboard.dismiss}
+                            >
+                                <Input
+                                    placeholder="Ghi chú"
+                                    errorStyle={{ color: "red" }}
+                                    inputContainerStyle={{
+                                        ...styles.input,
+                                        borderBottomLeftRadius: 10,
+                                        borderBottomRightRadius: 10,
+                                    }}
+                                    inputStyle={{ color: "white" }}
+                                    placeholderTextColor="#676769"
+                                    onChange={noteInputChange}
+                                    value={note}
+                                />
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.switch}>
                             <View style={styles.switchLeft}>

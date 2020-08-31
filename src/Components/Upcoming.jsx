@@ -8,7 +8,7 @@ const Upcoming = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Sắp diễn ra</Text>
-            <UpcomingItem list={data} completed={setdata} />
+            <UpcomingItem completed={setdata} list={data} />
         </View>
     );
 };

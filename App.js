@@ -3,7 +3,6 @@ import { Button, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./src/Components/Home";
-import Setting from "./src/Components/Setting";
 import store from "./src/Components/Redux/store";
 import { Provider as StoreProvider } from "react-redux";
 import SearchBarInput from "./src/Components/SearchBar";

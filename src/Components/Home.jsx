@@ -6,6 +6,8 @@ import {
     Text,
     TouchableWithoutFeedback,
     Button,
+    Keyboard,
+    Dimensions,
 } from "react-native";
 import CardList from "./CardList";
 import SearchBarInput from "./SearchBar";
@@ -14,6 +16,7 @@ import IconAdd from "react-native-vector-icons/Ionicons";
 import AddEditToDo from "./Modal/AddEditToDo";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 function Home(props) {
     const navigation = useNavigation();
     const [data, setdata] = React.useState([]);
