@@ -30,7 +30,10 @@ function Home(props) {
 
     return (
         <View style={styles.centeredView}>
-            <SearchBarInput />
+            <SearchBarInput
+                isAddVisible={isAddVisible}
+                setAddVisible={setAddVisible}
+            />
             <ScrollView>
                 <CardList data={data} />
                 <Upcoming data={data} setdata={setdata} />

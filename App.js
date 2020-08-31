@@ -1,7 +1,10 @@
 import * as React from "react";
 import { Button, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+    createStackNavigator,
+    CardStyleInterpolators,
+} from "@react-navigation/stack";
 import Home from "./src/Components/Home";
 import store from "./src/Components/Redux/store";
 import { Provider as StoreProvider } from "react-redux";
@@ -15,6 +18,9 @@ function MyStack() {
         <StoreProvider store={store}>
             <Stack.Navigator
                 screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+
                     headerShown: true,
                     headerStyle: {
                         backgroundColor: "black",

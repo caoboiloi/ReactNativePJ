@@ -1,53 +1,25 @@
 import React, { useState, useRef } from "react";
 import { SearchBar, ListItem } from "react-native-elements";
-import { View, Animated, FlatList, StyleSheet, Keyboard } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import {
+    View,
+    Animated,
+    FlatList,
+    StyleSheet,
+    Keyboard,
+    Button,
+} from "react-native";
+import {
+    TouchableWithoutFeedback,
+    TouchableOpacity,
+} from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import AddEditToDo from "./Modal/AddEditToDo";
 
-const SearchBarInput = () => {
-    const data1 = [
-        {
-            title: "1",
-            time: 1,
-            completed: false,
-            important: true,
-            note: "hallo1",
-        },
-        {
-            title: "2",
-            time: 2,
-            completed: false,
-            important: true,
-            note: "hallo2",
-        },
-        {
-            title: "3",
-            time: 3,
-            completed: true,
-            note: "hallo3",
-        },
-        {
-            title: "4",
-            time: 4,
-            completed: false,
-            important: false,
-            note: "hallo4",
-        },
-        {
-            title: "5",
-            time: 5,
-            completed: false,
-            important: true,
-            note: "hallo5",
-        },
-        {
-            title: "1236",
-            time: 6,
-            completed: false,
-            important: false,
-            note: "hallo6",
-        },
-    ];
-    const [isModalFlatList, setModalFlatList] = useState(false);
+const SearchBarInput = (props) => {
+    const data1 = useSelector((state) => state);
+    const [data, setdata] = useState([]);
+    const [isAddVisible, setAddVisible] = useState(false);
+    // const { isAddVisible, setAddVisible } = props;
     const [search, setSearch] = useState("");
     const [dataFilter, setdataFilter] = useState(data1);
     const [focus, setFocus] = useState(false);
@@ -116,6 +88,8 @@ const SearchBarInput = () => {
                     onBlur={() => {
                         Keyboard.dismiss();
                     }}
+                    onCancel={() => setFocus(false)}
+                    clearIcon={false}
                 />
             </TouchableWithoutFeedback>
             {focus && search !== "" ? (
@@ -126,8 +100,10 @@ const SearchBarInput = () => {
                             chevron
                             bottomDivider={false}
                             onPress={() => {
-                                console.log("pres11s");
                                 setSearch("");
+                                setdata(item);
+                                setFocus(false);
+                                setAddVisible(true);
                             }}
                             title={`${item.title}`}
                             subtitle={item.note}
@@ -140,6 +116,12 @@ const SearchBarInput = () => {
                     ItemSeparatorComponent={renderSeparator}
                 />
             ) : null}
+
+            <AddEditToDo
+                isAddVisible={isAddVisible}
+                setAddVisible={setAddVisible}
+                data={data}
+            />
         </Animated.View>
     );
 };

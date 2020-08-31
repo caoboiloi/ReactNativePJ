@@ -41,7 +41,7 @@ const ComfirmDel = (props) => {
                                 title="Xóa"
                                 onPress={async () => {
                                     await setDeleteVisible(false);
-                                    closeModal(false);
+                                    await closeModal(false);
                                     accept(time);
                                 }}
                             />

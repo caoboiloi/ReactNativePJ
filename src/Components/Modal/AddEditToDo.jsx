@@ -14,7 +14,7 @@ import CancelModal from "./CancelModal";
 import { Input } from "react-native-elements";
 import IconStar from "react-native-vector-icons/MaterialCommunityIcons";
 import { useSelector, useDispatch } from "react-redux";
-import { deletenote, addnote } from "../Redux/noteApp";
+import { deletenote, addnote, editnote } from "../Redux/noteApp";
 import ComfirmDel from "./ComfirmDel";
 const screenWidth = Math.round(Dimensions.get("window").width);
 
@@ -22,6 +22,7 @@ const AddEditToDo = (props) => {
     const notes = useSelector((state) => state);
     const deleteNote = (id) => dispatch(deletenote(id));
     const addNote = (note) => dispatch(addnote(note));
+    const editNote = (note) => dispatch(editnote(note));
     const dispatch = useDispatch();
     const { isAddVisible, setAddVisible, data } = props;
     const [isDeleteVisible, setDeleteVisible] = useState(false);
@@ -66,6 +67,7 @@ const AddEditToDo = (props) => {
         data.important = isEnabled;
         data.note = note;
         setAddVisible(false);
+        editNote([...notes]);
     };
     const handleNewNote = () => {
         if (title !== "") {
@@ -83,7 +85,6 @@ const AddEditToDo = (props) => {
             setTime("");
             addNote(newData);
             setAddVisible(false);
-            console.log(notes);
         }
     };
     useEffect(() => {
