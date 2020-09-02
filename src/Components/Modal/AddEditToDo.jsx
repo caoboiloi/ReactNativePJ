@@ -68,6 +68,7 @@ const AddEditToDo = (props) => {
         data.note = note;
         setAddVisible(false);
         editNote([...notes]);
+        setisNew(false);
     };
     const handleNewNote = () => {
         if (title !== "") {
