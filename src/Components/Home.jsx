@@ -51,10 +51,6 @@ function Home(props) {
                 isAddVisible={isAddVisible}
                 setAddVisible={setAddVisible}
             />
-            <Button
-                title="asd"
-                onPress={() => navigation.navigate("AllList")}
-            />
         </View>
     );
 }

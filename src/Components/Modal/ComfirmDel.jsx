@@ -23,8 +23,7 @@ const ComfirmDel = (props) => {
                                 textAlign: "center",
                             }}
                         >
-                            Xóa "Nhắc nhở"
-                            hjgajksdhgagsfbnasfnbasfjahsgfjasgfwefnbvsdfmhawekjfgksej?
+                            Xóa ?
                         </Text>
                     </View>
                     <View style={styles.buttonGroup}>
@@ -42,7 +41,7 @@ const ComfirmDel = (props) => {
                                 onPress={async () => {
                                     await setDeleteVisible(false);
                                     await closeModal(false);
-                                    accept(time);
+                                    await accept(time);
                                 }}
                             />
                         </View>

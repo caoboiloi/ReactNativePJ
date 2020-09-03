@@ -14,6 +14,7 @@ import {
 } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import AddEditToDo from "./Modal/AddEditToDo";
+import { color } from "react-native-reanimated";
 
 const SearchBarInput = (props) => {
     const data1 = useSelector((state) => state);

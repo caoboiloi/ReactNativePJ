@@ -20,14 +20,20 @@ const UpcomingItem = (props) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+    const newList = list
+        .sort(function (a, b) {
+            return b.time - a.time;
+        })
+        .slice(0, 5);
     return (
         <View>
-            {list.map((item, i) => {
+            {newList.map((item, i) => {
                 if (item.completed) {
                     return;
                 }
                 const borderRadiusTop = i == 0 ? true : false;
-                const borderRadiusBottom = i == list.length - 1 ? true : false;
+                const borderRadiusBottom =
+                    i == newList.length - 1 ? true : false;
 
                 return (
                     <ListItem
@@ -57,9 +63,15 @@ const UpcomingItem = (props) => {
                                 ? 15
                                 : 0,
                         }}
-                        titleStyle={{ color: "#88878C" }}
+                        titleStyle={{ color: "white", fontSize: 18 }}
                         key={i}
                         title={item.title}
+                        subtitle={
+                            item.note.length > 20
+                                ? item.note.slice(0, 20) + "..."
+                                : item.note
+                        }
+                        subtitleStyle={{ color: "#88878C" }}
                         bottomDivider={borderRadiusBottom ? false : true}
                         leftIcon={
                             <StarIcon

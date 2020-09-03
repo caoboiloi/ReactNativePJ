@@ -27,47 +27,9 @@ export function editnote(note) {
 // reducer
 
 const initialState = [
-    {
-        title: "1",
-        time: 1597573620339,
-        completed: false,
-        important: true,
-        note: "hallo1",
-    },
-    {
-        title: "2",
-        time: 1598568778148,
-        completed: false,
-        important: true,
-        note: "hallo2",
-    },
-    {
-        title: "3",
-        time: 1597168778147,
-        completed: true,
-        note: "hallo3",
-    },
-    {
-        title: "4",
-        time: 1598568778146,
-        completed: false,
-        important: false,
-        note: "hallo4",
-    },
-    {
-        title: "5",
-        time: 1596568778145,
-        completed: false,
-        important: true,
-        note: "hallo5",
-    },
-    {
-        title: "1236",
-        time: 1597568778144,
-        completed: false,
-        important: false,
-        note: "hallo6",
-    },
+
+
+
 ];
 
 function notesReducer(state = initialState, action) {

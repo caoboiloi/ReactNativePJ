@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const CardList = (props) => {
     const { data } = props;
     const numberCompleted = data.filter((e) => e.completed === true).length;
     const numberImportant = data.filter((e) => e.important === true).length;
+    const numberAll = data.length;
     return (
         <View style={styles.container}>
             <CardItem
@@ -14,69 +17,75 @@ const CardList = (props) => {
                 title="Hôm nay"
                 color="#0372E5"
                 number={1}
+                name=""
             />
             <CardItem
                 iconName="check-double"
                 title="Đã hoàn thành"
                 color="green"
                 number={numberCompleted}
+                name=""
             />
             <CardItem
                 iconName="wallet"
                 title="Tất cả"
                 color="#4F5259"
-                number={1}
+                number={numberAll}
+                name="AllList"
             />
             <CardItem
                 iconName="info"
                 title="Quan trọng"
                 color="#DC830E"
                 number={numberImportant}
+                name=""
             />
         </View>
     );
 };
 const CardItem = (props) => {
-    const { iconName, title, color, number } = props;
-    const [bgColor, setBgColor] = useState(false);
+    const navigation = useNavigation();
+    const { iconName, title, color, number, name } = props;
     return (
-        <View
-            style={styles.item}
-            onTouchStart={() => setBgColor(!bgColor)}
-            style={{
-                ...styles.item,
-                backgroundColor: bgColor ? "#2A292E" : "#18181A",
-            }}
+        <TouchableOpacity
+            onPress={() => (name ? navigation.navigate(name) : {})}
         >
-            <View style={styles.header}>
-                <View style={{ ...styles.icon, backgroundColor: color }}>
-                    <Icon name={iconName} size={15} color={"white"} />
+            <View
+                style={{
+                    ...styles.item,
+                    backgroundColor: "#18181A",
+                }}
+            >
+                <View style={styles.header}>
+                    <View style={{ ...styles.icon, backgroundColor: color }}>
+                        <Icon name={iconName} size={15} color={"white"} />
+                    </View>
+                    <Text
+                        h3
+                        h3Style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            textAlignVertical: "top",
+                            textAlign: "center",
+                        }}
+                    >
+                        {number}
+                    </Text>
                 </View>
-                <Text
-                    h3
-                    h3Style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        textAlignVertical: "top",
-                        textAlign: "center",
-                    }}
-                >
-                    {number}
-                </Text>
+                <View style={styles.title}>
+                    <Text
+                        h5
+                        style={{
+                            color: "#88878C",
+                            fontSize: 20,
+                            fontWeight: "bold",
+                        }}
+                    >
+                        {title}
+                    </Text>
+                </View>
             </View>
-            <View style={styles.title}>
-                <Text
-                    h5
-                    style={{
-                        color: "#88878C",
-                        fontSize: 20,
-                        fontWeight: "bold",
-                    }}
-                >
-                    {title}
-                </Text>
-            </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
