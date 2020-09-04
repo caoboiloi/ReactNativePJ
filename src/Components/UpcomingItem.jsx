@@ -8,10 +8,12 @@ import StarIcon from "react-native-vector-icons/AntDesign";
 import AddEditToDo from "./Modal/AddEditToDo";
 import { editnote, deletenote } from "./Redux/noteApp";
 import { useDispatch } from "react-redux";
+import { cos } from "react-native-reanimated";
 let dataTemp = [];
+let isNewDate = false;
 
 const UpcomingItem = (props) => {
-    const { list, completed } = props;
+    const { list, completed, type } = props;
     const [isModalVisible, setModalVisible] = useState(false);
     const [isAddVisible, setAddVisible] = useState(false);
     const dispatch = useDispatch();
@@ -20,68 +22,94 @@ const UpcomingItem = (props) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const newList = list
-        .sort(function (a, b) {
-            return b.time - a.time;
-        })
-        .slice(0, 5);
+    let time = [];
+    const newList =
+        type === "showPart"
+            ? list
+                  .sort(function (a, b) {
+                      return b.time - a.time;
+                  })
+                  .slice(0, 5)
+            : list.sort(function (a, b) {
+                  return b.time - a.time;
+              });
     return (
         <View>
             {newList.map((item, i) => {
                 if (item.completed) {
                     return;
                 }
-                const borderRadiusTop = i == 0 ? true : false;
-                const borderRadiusBottom =
-                    i == newList.length - 1 ? true : false;
-
+                let borderRadiusTop = i == 0 ? true : false;
+                let borderRadiusBottom = i == newList.length - 1 ? true : false;
+                const date = new Date(item.time).getDate();
+                const month = new Date(item.time).getMonth();
+                const year = new Date(item.time).getFullYear();
+                const dateToString = date + "/" + month + "/" + year;
+                if (!time.includes(dateToString)) {
+                    time.push(dateToString);
+                    isNewDate = true;
+                    borderRadiusTop = true;
+                } else {
+                    isNewDate = false;
+                }
                 return (
-                    <ListItem
-                        onPress={() => {
-                            setAddVisible(true);
-                            setdata(item);
-                        }}
-                        onLongPress={() => {
-                            let newList = Array.from([...Object.create(list)]);
-                            const newItem = newList.find(
-                                (element) => element.time === item.time
-                            );
-                            const newTempItem = { ...newItem };
-                            const index = newList.indexOf(newItem);
-                            newList.splice(index, 1);
-                            newTempItem.completed = true;
-                            newList.splice(index, 0, newTempItem);
-                            dataTemp = [...newList];
-                            toggleModal();
-                        }}
-                        containerStyle={{
-                            ...styles.item_container,
-                            borderTopLeftRadius: borderRadiusTop ? 15 : 0,
-                            borderTopRightRadius: borderRadiusTop ? 15 : 0,
-                            borderBottomLeftRadius: borderRadiusBottom ? 15 : 0,
-                            borderBottomRightRadius: borderRadiusBottom
-                                ? 15
-                                : 0,
-                        }}
-                        titleStyle={{ color: "white", fontSize: 18 }}
-                        key={i}
-                        title={item.title}
-                        subtitle={
-                            item.note.length > 20
-                                ? item.note.slice(0, 20) + "..."
-                                : item.note
-                        }
-                        subtitleStyle={{ color: "#88878C" }}
-                        bottomDivider={borderRadiusBottom ? false : true}
-                        leftIcon={
-                            <StarIcon
-                                name={item.important ? "star" : "staro"}
-                                size={30}
-                                color="orange"
-                            />
-                        }
-                        chevron
-                    />
+                    <View key={i}>
+                        {isNewDate ? (
+                            <Text Text style={{ color: "white" }}>
+                                {"Ngày " + date + "/" + month + "/" + year}
+                            </Text>
+                        ) : null}
+
+                        <ListItem
+                            onPress={() => {
+                                setAddVisible(true);
+                                setdata(item);
+                            }}
+                            onLongPress={() => {
+                                let newList = Array.from([
+                                    ...Object.create(list),
+                                ]);
+                                const newItem = newList.find(
+                                    (element) => element.time === item.time
+                                );
+                                const newTempItem = { ...newItem };
+                                const index = newList.indexOf(newItem);
+                                newList.splice(index, 1);
+                                newTempItem.completed = true;
+                                newList.splice(index, 0, newTempItem);
+                                dataTemp = [...newList];
+                                toggleModal();
+                            }}
+                            containerStyle={{
+                                ...styles.item_container,
+                                borderTopLeftRadius: borderRadiusTop ? 15 : 0,
+                                borderTopRightRadius: borderRadiusTop ? 15 : 0,
+                                borderBottomLeftRadius: borderRadiusBottom
+                                    ? 15
+                                    : 0,
+                                borderBottomRightRadius: borderRadiusBottom
+                                    ? 15
+                                    : 0,
+                            }}
+                            titleStyle={{ color: "white", fontSize: 18 }}
+                            title={item.title}
+                            subtitle={
+                                item.note.length > 20
+                                    ? item.note.slice(0, 20) + "..."
+                                    : item.note
+                            }
+                            subtitleStyle={{ color: "#88878C" }}
+                            bottomDivider={borderRadiusBottom ? false : true}
+                            leftIcon={
+                                <StarIcon
+                                    name={item.important ? "star" : "staro"}
+                                    size={30}
+                                    color="orange"
+                                />
+                            }
+                            chevron
+                        />
+                    </View>
                 );
             })}
             <Modal

@@ -7,7 +7,7 @@ const AllList = () => {
     const notes = useSelector((state) => state);
     return (
         <View style={styles.container}>
-            <UpcomingItem completed={null} list={notes} />
+            <UpcomingItem completed={null} list={notes} type={"showAll"} />
         </View>
     );
 };

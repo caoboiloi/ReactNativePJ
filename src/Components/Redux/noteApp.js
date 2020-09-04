@@ -28,7 +28,13 @@ export function editnote(note) {
 
 const initialState = [
 
-
+    {
+        "completed": false,
+        "important": false,
+        "note": "",
+        "time": 1599124424212,
+        "title": "  Hhd",
+    }
 
 ];
 
