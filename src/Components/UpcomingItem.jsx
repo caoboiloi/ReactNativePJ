@@ -52,6 +52,15 @@ const UpcomingItem = (props) => {
                 } else {
                     isNewDate = false;
                 }
+                if (newList.includes(newList[i + 1])) {
+                    if (
+                        new Date(newList[i + 1].time).getDate() !==
+                        new Date(newList[i].time).getDate()
+                    ) {
+                        borderRadiusBottom = true;
+                    }
+                }
+
                 return (
                     <View key={i}>
                         {isNewDate ? (

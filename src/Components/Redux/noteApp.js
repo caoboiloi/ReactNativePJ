@@ -34,6 +34,13 @@ const initialState = [
         "note": "",
         "time": 1599124424212,
         "title": "  Hhd",
+    },
+    {
+        "completed": false,
+        "important": false,
+        "note": "",
+        "time": 1599124424312,
+        "title": "  Hhd1",
     }
 
 ];
