@@ -8,7 +8,6 @@ import StarIcon from "react-native-vector-icons/AntDesign";
 import AddEditToDo from "./Modal/AddEditToDo";
 import { editnote, deletenote } from "./Redux/noteApp";
 import { useDispatch } from "react-redux";
-import { cos } from "react-native-reanimated";
 let dataTemp = [];
 let isNewDate = false;
 
@@ -63,8 +62,10 @@ const UpcomingItem = (props) => {
 
                 return (
                     <View key={i}>
-                        {isNewDate ? (
-                            <Text Text style={{ color: "white" }}>
+                        {isNewDate &&
+                        type !== "Today" &&
+                        type !== "showPart" ? (
+                            <Text Text style={styles.label}>
                                 {"Ngày " + date + "/" + month + "/" + year}
                             </Text>
                         ) : null}
@@ -207,5 +208,10 @@ const styles = StyleSheet.create({
     icon: {
         bottom: 0,
         alignSelf: "center",
+    },
+    label: {
+        color: "white",
+        padding: 10,
+        fontSize: 16,
     },
 });

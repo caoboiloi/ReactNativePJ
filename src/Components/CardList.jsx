@@ -17,7 +17,7 @@ const CardList = (props) => {
                 title="Hôm nay"
                 color="#0372E5"
                 number={1}
-                name=""
+                name="Today"
             />
             <CardItem
                 iconName="check-double"

@@ -10,6 +10,7 @@ import store from "./src/Components/Redux/store";
 import { Provider as StoreProvider } from "react-redux";
 import SearchBarInput from "./src/Components/SearchBar";
 import AllList from "./src/Components/Screen/AllList";
+import Today from "./src/Components/Screen/Today";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,18 @@ function MyStack() {
                     name="AllList"
                     component={AllList}
                     options={{
+                        title: "Tất cả",
+                        headerTintColor: "#fff",
+                        headerTitleStyle: {
+                            fontWeight: "bold",
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name="Today"
+                    component={Today}
+                    options={{
+                        title: "Hôm nay",
                         headerTintColor: "#fff",
                         headerTitleStyle: {
                             fontWeight: "bold",
