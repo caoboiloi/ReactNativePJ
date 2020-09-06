@@ -22,7 +22,7 @@ const UpcomingItem = (props) => {
         setModalVisible(!isModalVisible);
     };
     let time = [];
-    const newList =
+    let newList =
         type === "showPart"
             ? list
                   .sort(function (a, b) {
@@ -32,11 +32,24 @@ const UpcomingItem = (props) => {
             : list.sort(function (a, b) {
                   return b.time - a.time;
               });
+    if (type === "Important") {
+        newList = list.filter((e) => e.important === true);
+    }
+    if (type === "Completed") {
+        newList = list.filter((e) => e.completed === true);
+    }
     return (
         <View>
+            {newList.length === 0 ? (
+                <Text style={{ color: "orange", textAlign: "center" }}>
+                    Chưa có công việc, vui lòng thêm công việc
+                </Text>
+            ) : null}
             {newList.map((item, i) => {
-                if (item.completed) {
-                    return;
+                if (type !== "Completed") {
+                    if (item.completed) {
+                        return;
+                    }
                 }
                 let borderRadiusTop = i == 0 ? true : false;
                 let borderRadiusBottom = i == newList.length - 1 ? true : false;
@@ -44,19 +57,21 @@ const UpcomingItem = (props) => {
                 const month = new Date(item.time).getMonth();
                 const year = new Date(item.time).getFullYear();
                 const dateToString = date + "/" + month + "/" + year;
-                if (!time.includes(dateToString)) {
-                    time.push(dateToString);
-                    isNewDate = true;
-                    borderRadiusTop = true;
-                } else {
-                    isNewDate = false;
-                }
-                if (newList.includes(newList[i + 1])) {
-                    if (
-                        new Date(newList[i + 1].time).getDate() !==
-                        new Date(newList[i].time).getDate()
-                    ) {
-                        borderRadiusBottom = true;
+                if (type !== "showPart" && type !== "Today") {
+                    if (!time.includes(dateToString)) {
+                        time.push(dateToString);
+                        isNewDate = true;
+                        borderRadiusTop = true;
+                    } else {
+                        isNewDate = false;
+                    }
+                    if (newList.includes(newList[i + 1])) {
+                        if (
+                            new Date(newList[i + 1].time).getDate() !==
+                            new Date(newList[i].time).getDate()
+                        ) {
+                            borderRadiusBottom = true;
+                        }
                     }
                 }
 

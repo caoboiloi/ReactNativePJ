@@ -11,6 +11,8 @@ import { Provider as StoreProvider } from "react-redux";
 import SearchBarInput from "./src/Components/SearchBar";
 import AllList from "./src/Components/Screen/AllList";
 import Today from "./src/Components/Screen/Today";
+import Important from "./src/Components/Screen/Important";
+import Completed from "./src/Components/Screen/Completed";
 
 const Stack = createStackNavigator();
 
@@ -56,6 +58,28 @@ function MyStack() {
                     component={Today}
                     options={{
                         title: "Hôm nay",
+                        headerTintColor: "#fff",
+                        headerTitleStyle: {
+                            fontWeight: "bold",
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name="Important"
+                    component={Important}
+                    options={{
+                        title: "Quang trọng",
+                        headerTintColor: "#fff",
+                        headerTitleStyle: {
+                            fontWeight: "bold",
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name="Completed"
+                    component={Completed}
+                    options={{
+                        title: "Đã hoàn thành",
                         headerTintColor: "#fff",
                         headerTitleStyle: {
                             fontWeight: "bold",

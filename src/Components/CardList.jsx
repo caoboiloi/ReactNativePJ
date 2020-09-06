@@ -8,7 +8,12 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const CardList = (props) => {
     const { data } = props;
     const numberCompleted = data.filter((e) => e.completed === true).length;
-    const numberImportant = data.filter((e) => e.important === true).length;
+    const numberImportant = data.filter(
+        (e) => e.important === true && e.completed === false
+    ).length;
+    const numberToday = data.filter(
+        (e) => new Date(e.time).getDay() === new Date().getDay()
+    ).length;
     const numberAll = data.length;
     return (
         <View style={styles.container}>
@@ -16,7 +21,7 @@ const CardList = (props) => {
                 iconName="calendar-alt"
                 title="Hôm nay"
                 color="#0372E5"
-                number={1}
+                number={numberToday}
                 name="Today"
             />
             <CardItem
@@ -24,7 +29,7 @@ const CardList = (props) => {
                 title="Đã hoàn thành"
                 color="green"
                 number={numberCompleted}
-                name=""
+                name="Completed"
             />
             <CardItem
                 iconName="wallet"
@@ -38,7 +43,7 @@ const CardList = (props) => {
                 title="Quan trọng"
                 color="#DC830E"
                 number={numberImportant}
-                name=""
+                name="Important"
             />
         </View>
     );
