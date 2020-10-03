@@ -8,23 +8,35 @@ import {
     Button,
     Keyboard,
     Dimensions,
+    AsyncStorage,
 } from "react-native";
 import CardList from "./CardList";
 import SearchBarInput from "./SearchBar";
 import Upcoming from "./Upcoming";
 import IconAdd from "react-native-vector-icons/Ionicons";
 import AddEditToDo from "./Modal/AddEditToDo";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { editnote, getData, initialState, storeData } from "./Redux/noteApp";
+
 function Home(props) {
     const navigation = useNavigation();
     const [data, setdata] = React.useState([]);
     const [isAddVisible, setAddVisible] = React.useState(false);
+    const editNote = (note) => dispatch(editnote(note));
+    const dispatch = useDispatch();
 
     const notes = useSelector((state) => state);
-
+    React.useEffect(() => {
+        AsyncStorage.getItem("data").then((res) => {
+            if (res.length > 0) {
+                editNote(JSON.parse(res));
+            }
+        });
+    }, []);
     React.useEffect(() => {
         setdata(notes);
+        storeData(notes);
     }, [notes]);
 
     return (

@@ -12,9 +12,9 @@ const CardList = (props) => {
         (e) => e.important === true && e.completed === false
     ).length;
     const numberToday = data.filter(
-        (e) => new Date(e.time).getDay() === new Date().getDay()
+        (e) => new Date(e.time).getDay() === new Date().getDay() && !e.completed
     ).length;
-    const numberAll = data.length;
+    const numberAll = data.filter((e) => e.completed !== true).length;
     return (
         <View style={styles.container}>
             <CardItem

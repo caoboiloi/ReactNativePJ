@@ -9,15 +9,15 @@ import {
     Keyboard,
 } from "react-native";
 import Modal from "react-native-modal";
-import { Dimensions } from "react-native";
+import { Dimensions, AsyncStorage } from "react-native";
 import CancelModal from "./CancelModal";
 import { Input } from "react-native-elements";
 import IconStar from "react-native-vector-icons/MaterialCommunityIcons";
 import { useSelector, useDispatch } from "react-redux";
-import { deletenote, addnote, editnote } from "../Redux/noteApp";
+import { deletenote, addnote, editnote, storeData } from "../Redux/noteApp";
 import ComfirmDel from "./ComfirmDel";
-const screenWidth = Math.round(Dimensions.get("window").width);
 
+const screenWidth = Math.round(Dimensions.get("window").width);
 const AddEditToDo = (props) => {
     const notes = useSelector((state) => state);
     const deleteNote = (id) => dispatch(deletenote(id));
@@ -33,6 +33,7 @@ const AddEditToDo = (props) => {
     const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
     const mode = data ? "edit" : "new";
     const [isNew, setisNew] = useState(false);
+
     const setData = () => {
         if (data) {
             settitle(data.title);
@@ -66,9 +67,12 @@ const AddEditToDo = (props) => {
         data.time = time;
         data.important = isEnabled;
         data.note = note;
+
         setAddVisible(false);
+        setIsEnabled(false);
         editNote([...notes]);
         setisNew(false);
+        // storeData([...notes]);
     };
     const handleNewNote = () => {
         if (title !== "") {
@@ -86,6 +90,7 @@ const AddEditToDo = (props) => {
             setTime("");
             addNote(newData);
             setAddVisible(false);
+            // storeData([...notes, newData]);
         }
     };
     useEffect(() => {
@@ -215,12 +220,15 @@ const AddEditToDo = (props) => {
                             />
                         </View>
                         {mode === "edit" ? (
-                            <Button
-                                title="delete"
-                                onPress={() => {
-                                    setDeleteVisible(true);
-                                }}
-                            />
+                            <View style={{ margin: 15 }}>
+                                <Button
+                                    color="#5a5a5a"
+                                    title="delete"
+                                    onPress={() => {
+                                        setDeleteVisible(true);
+                                    }}
+                                />
+                            </View>
                         ) : (
                             <View></View>
                         )}
@@ -237,6 +245,7 @@ const AddEditToDo = (props) => {
                     accept={deleteNote}
                     time={time}
                     closeModal={setAddVisible}
+                    name={title}
                 />
             </Modal>
         </View>

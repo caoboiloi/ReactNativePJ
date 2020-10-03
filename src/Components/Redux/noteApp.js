@@ -1,7 +1,9 @@
 export const ADD_NOTE = "ADD_NOTE";
 export const DELETE_NOTE = "DELETE_NOTE";
 export const EDIT_NOTE = "EDIT_NOTE";
+// import { AsyncStorage } from "react-native";
 import remove from "lodash.remove";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export function addnote(note) {
     return {
@@ -26,29 +28,21 @@ export function editnote(note) {
 
 // reducer
 
-const initialState = [
+export var initialState = [];
 
-    {
-        "completed": false,
-        "important": false,
-        "note": "",
-        "time": 1599124424212,
-        "title": "  Hhd",
-    },
-    {
-        "completed": false,
-        "important": false,
-        "note": "",
-        "time": 1599124424312,
-        "title": "  Hhd1",
+export const storeData = async (value) => {
+    try {
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem("data", jsonValue);
+    } catch (e) {
+        // saving error
     }
-
-];
+};
 
 function notesReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_NOTE:
-            return [
+            const newState = [
                 ...state,
                 {
                     title: action.payload.title,
@@ -58,6 +52,7 @@ function notesReducer(state = initialState, action) {
                     note: action.payload.note,
                 },
             ];
+            return newState;
         case EDIT_NOTE:
             return [...action.payload];
         case DELETE_NOTE:

@@ -8,6 +8,7 @@ import StarIcon from "react-native-vector-icons/AntDesign";
 import AddEditToDo from "./Modal/AddEditToDo";
 import { editnote, deletenote } from "./Redux/noteApp";
 import { useDispatch } from "react-redux";
+import { ScrollView } from "react-native";
 let dataTemp = [];
 let isNewDate = false;
 
@@ -34,156 +35,166 @@ const UpcomingItem = (props) => {
               });
     if (type === "Important") {
         newList = list.filter((e) => e.important === true);
-    }
-    if (type === "Completed") {
+    } else if (type === "Completed") {
         newList = list.filter((e) => e.completed === true);
+    } else {
+        newList = list.filter((e) => e.completed !== true);
     }
     return (
-        <View>
-            {newList.length === 0 ? (
-                <Text style={{ color: "orange", textAlign: "center" }}>
-                    Chưa có công việc, vui lòng thêm công việc
-                </Text>
-            ) : null}
-            {newList.map((item, i) => {
-                if (type !== "Completed") {
-                    if (item.completed) {
-                        return;
-                    }
-                }
-                let borderRadiusTop = i == 0 ? true : false;
-                let borderRadiusBottom = i == newList.length - 1 ? true : false;
-                const date = new Date(item.time).getDate();
-                const month = new Date(item.time).getMonth();
-                const year = new Date(item.time).getFullYear();
-                const dateToString = date + "/" + month + "/" + year;
-                if (type !== "showPart" && type !== "Today") {
-                    if (!time.includes(dateToString)) {
-                        time.push(dateToString);
-                        isNewDate = true;
-                        borderRadiusTop = true;
-                    } else {
-                        isNewDate = false;
-                    }
-                    if (newList.includes(newList[i + 1])) {
-                        if (
-                            new Date(newList[i + 1].time).getDate() !==
-                            new Date(newList[i].time).getDate()
-                        ) {
-                            borderRadiusBottom = true;
+        <ScrollView>
+            <View>
+                {newList.length === 0 ? (
+                    <Text style={{ color: "orange", textAlign: "center" }}>
+                        Chưa có công việc, vui lòng thêm công việc
+                    </Text>
+                ) : null}
+                {newList.map((item, i) => {
+                    if (type !== "Completed") {
+                        if (item.completed) {
+                            return;
                         }
                     }
-                }
+                    let borderRadiusTop = i == 0 ? true : false;
+                    let borderRadiusBottom =
+                        i == newList.length - 1 ? true : false;
+                    const date = new Date(item.time).getDate();
+                    const month = new Date(item.time).getMonth() + 1;
+                    const year = new Date(item.time).getFullYear();
+                    const dateToString = date + "/" + month + "/" + year;
+                    if (type !== "showPart" && type !== "Today") {
+                        if (!time.includes(dateToString)) {
+                            time.push(dateToString);
+                            isNewDate = true;
+                            borderRadiusTop = true;
+                        } else {
+                            isNewDate = false;
+                        }
+                        if (newList.includes(newList[i + 1])) {
+                            if (
+                                new Date(newList[i + 1].time).getDate() !==
+                                new Date(newList[i].time).getDate()
+                            ) {
+                                borderRadiusBottom = true;
+                            }
+                        }
+                    }
 
-                return (
-                    <View key={i}>
-                        {isNewDate &&
-                        type !== "Today" &&
-                        type !== "showPart" ? (
-                            <Text Text style={styles.label}>
-                                {"Ngày " + date + "/" + month + "/" + year}
-                            </Text>
-                        ) : null}
+                    return (
+                        <View key={i}>
+                            {isNewDate &&
+                            type !== "Today" &&
+                            type !== "showPart" ? (
+                                <Text Text style={styles.label}>
+                                    {"Ngày " + date + "/" + month + "/" + year}
+                                </Text>
+                            ) : null}
 
-                        <ListItem
+                            <ListItem
+                                onPress={() => {
+                                    setAddVisible(true);
+                                    setdata(item);
+                                }}
+                                onLongPress={() => {
+                                    let newList = Array.from([
+                                        ...Object.create(list),
+                                    ]);
+                                    const newItem = newList.find(
+                                        (element) => element.time === item.time
+                                    );
+                                    const newTempItem = { ...newItem };
+                                    const index = newList.indexOf(newItem);
+                                    newList.splice(index, 1);
+                                    newTempItem.completed = true;
+                                    newList.splice(index, 0, newTempItem);
+                                    dataTemp = [...newList];
+                                    toggleModal();
+                                }}
+                                containerStyle={{
+                                    ...styles.item_container,
+                                    borderTopLeftRadius: borderRadiusTop
+                                        ? 15
+                                        : 0,
+                                    borderTopRightRadius: borderRadiusTop
+                                        ? 15
+                                        : 0,
+                                    borderBottomLeftRadius: borderRadiusBottom
+                                        ? 15
+                                        : 0,
+                                    borderBottomRightRadius: borderRadiusBottom
+                                        ? 15
+                                        : 0,
+                                }}
+                                titleStyle={{ color: "white", fontSize: 18 }}
+                                title={item.title}
+                                subtitle={
+                                    item.note.length > 20
+                                        ? item.note.slice(0, 20) + "..."
+                                        : item.note
+                                }
+                                subtitleStyle={{ color: "#88878C" }}
+                                bottomDivider={
+                                    borderRadiusBottom ? false : true
+                                }
+                                leftIcon={
+                                    <StarIcon
+                                        name={item.important ? "star" : "staro"}
+                                        size={30}
+                                        color="orange"
+                                    />
+                                }
+                                chevron
+                            />
+                        </View>
+                    );
+                })}
+                <Modal
+                    isVisible={isModalVisible && type !== "Completed"}
+                    onSwipeComplete={() => setModalVisible(false)}
+                    swipeDirection={["left", "right"]}
+                    swipeThreshold={250}
+                    animationIn="fadeInRight"
+                >
+                    <View style={styles.itemModal}>
+                        <View style={styles.modalContainer}>
+                            <IconCancle
+                                name="x-circle"
+                                size={30}
+                                color="white"
+                                onPress={() => setModalVisible(false)}
+                            />
+                        </View>
+                        <Text
+                            style={{
+                                ...styles.title,
+                                paddingBottom: 10,
+                                marginTop: 15,
+                            }}
+                        >
+                            Xác nhận hoàn thành
+                        </Text>
+                        <Icon
+                            name="ios-checkmark-circle-outline"
+                            size={70}
+                            color="green"
                             onPress={() => {
-                                setAddVisible(true);
-                                setdata(item);
-                            }}
-                            onLongPress={() => {
-                                let newList = Array.from([
-                                    ...Object.create(list),
-                                ]);
-                                const newItem = newList.find(
-                                    (element) => element.time === item.time
-                                );
-                                const newTempItem = { ...newItem };
-                                const index = newList.indexOf(newItem);
-                                newList.splice(index, 1);
-                                newTempItem.completed = true;
-                                newList.splice(index, 0, newTempItem);
-                                dataTemp = [...newList];
-                                toggleModal();
-                            }}
-                            containerStyle={{
-                                ...styles.item_container,
-                                borderTopLeftRadius: borderRadiusTop ? 15 : 0,
-                                borderTopRightRadius: borderRadiusTop ? 15 : 0,
-                                borderBottomLeftRadius: borderRadiusBottom
-                                    ? 15
-                                    : 0,
-                                borderBottomRightRadius: borderRadiusBottom
-                                    ? 15
-                                    : 0,
-                            }}
-                            titleStyle={{ color: "white", fontSize: 18 }}
-                            title={item.title}
-                            subtitle={
-                                item.note.length > 20
-                                    ? item.note.slice(0, 20) + "..."
-                                    : item.note
-                            }
-                            subtitleStyle={{ color: "#88878C" }}
-                            bottomDivider={borderRadiusBottom ? false : true}
-                            leftIcon={
-                                <StarIcon
-                                    name={item.important ? "star" : "staro"}
-                                    size={30}
-                                    color="orange"
-                                />
-                            }
-                            chevron
-                        />
-                    </View>
-                );
-            })}
-            <Modal
-                isVisible={isModalVisible}
-                onSwipeComplete={() => setModalVisible(false)}
-                swipeDirection={["left", "right"]}
-                swipeThreshold={250}
-                animationIn="fadeInRight"
-            >
-                <View style={styles.itemModal}>
-                    <View style={styles.modalContainer}>
-                        <IconCancle
-                            name="x-circle"
-                            size={30}
-                            color="white"
-                            onPress={() => setModalVisible(false)}
-                        />
-                    </View>
-                    <Text
-                        style={{
-                            ...styles.title,
-                            paddingBottom: 10,
-                            marginTop: 15,
-                        }}
-                    >
-                        Xác nhận hoàn thành
-                    </Text>
-                    <Icon
-                        name="ios-checkmark-circle-outline"
-                        size={70}
-                        color="green"
-                        onPress={() => {
-                            setModalVisible(false);
-                            if (dataTemp != []) {
-                                editNote(dataTemp);
+                                setModalVisible(false);
+                                if (dataTemp != []) {
+                                    editNote(dataTemp);
 
-                                dataTemp = [];
-                            }
-                        }}
-                        style={styles.icon}
-                    />
-                </View>
-            </Modal>
-            <AddEditToDo
-                isAddVisible={isAddVisible}
-                setAddVisible={setAddVisible}
-                data={data}
-            />
-        </View>
+                                    dataTemp = [];
+                                }
+                            }}
+                            style={styles.icon}
+                        />
+                    </View>
+                </Modal>
+                <AddEditToDo
+                    isAddVisible={isAddVisible}
+                    setAddVisible={setAddVisible}
+                    data={data}
+                />
+            </View>
+        </ScrollView>
     );
 };
 

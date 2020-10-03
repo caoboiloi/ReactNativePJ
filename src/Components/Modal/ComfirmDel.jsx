@@ -9,6 +9,7 @@ const ComfirmDel = (props) => {
         accept,
         time,
         closeModal,
+        name,
     } = props;
     return (
         <View>
@@ -23,7 +24,7 @@ const ComfirmDel = (props) => {
                                 textAlign: "center",
                             }}
                         >
-                            Xóa ?
+                            Xóa {name}?
                         </Text>
                     </View>
                     <View style={styles.buttonGroup}>
