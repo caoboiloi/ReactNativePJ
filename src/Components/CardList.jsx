@@ -11,9 +11,17 @@ const CardList = (props) => {
     const numberImportant = data.filter(
         (e) => e.important === true && e.completed === false
     ).length;
-    const numberToday = data.filter(
-        (e) => new Date(e.time).getDay() === new Date().getDay() && !e.completed
-    ).length;
+    const numberToday = data.filter((x) => {
+        const now = new Date();
+        if (
+            now.getDate() === new Date(x.time).getDate() &&
+            now.getMonth() === new Date(x.time).getMonth() &&
+            now.getYear() === new Date(x.time).getYear()
+        ) {
+            return true;
+        }
+        return false;
+    }).length;
     const numberAll = data.filter((e) => e.completed !== true).length;
     return (
         <View style={styles.container}>
