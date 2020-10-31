@@ -19,6 +19,7 @@ import ComfirmDel from "./ComfirmDel";
 
 const screenWidth = Math.round(Dimensions.get("window").width);
 const AddEditToDo = (props) => {
+
     const notes = useSelector((state) => state);
     const deleteNote = (id) => dispatch(deletenote(id));
     const addNote = (note) => dispatch(addnote(note));
@@ -67,12 +68,10 @@ const AddEditToDo = (props) => {
         data.time = time;
         data.important = isEnabled;
         data.note = note;
-
         setAddVisible(false);
-        setIsEnabled(false);
         editNote([...notes]);
         setisNew(false);
-        // storeData([...notes]);
+
     };
     const handleNewNote = () => {
         if (title !== "") {
@@ -90,7 +89,6 @@ const AddEditToDo = (props) => {
             setTime("");
             addNote(newData);
             setAddVisible(false);
-            // storeData([...notes, newData]);
         }
     };
     useEffect(() => {
