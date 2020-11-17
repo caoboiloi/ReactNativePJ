@@ -16,7 +16,7 @@ const CardList = (props) => {
         if (
             now.getDate() === new Date(x.time).getDate() &&
             now.getMonth() === new Date(x.time).getMonth() &&
-            now.getYear() === new Date(x.time).getYear()
+            now.getYear() === new Date(x.time).getYear() && !x.completed
         ) {
             return true;
         }
